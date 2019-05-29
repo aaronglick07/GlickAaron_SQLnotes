@@ -2,6 +2,7 @@ package com.example.mycontactapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -19,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_NAME_CONTACT + " TEXT, " + COLUMN_PHONE_NUMBER + " INTEGER)";
+                    COLUMN_NAME_CONTACT + " TEXT, " + COLUMN_PHONE_NUMBER + " TEXT, " + COLUMN_NAME_AGE + " TEXT)";
 
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -43,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String name, int phoneNumber, int age){
+    public boolean insertData(String name, String phoneNumber, String age){
         Log.d("MyContactApp", "DatabaseHelper: inserting data");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -55,10 +56,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("MyContactApp", "DatabaseHelper: Contact insert FAILED");
             return false;
         }
-        else{
+        else {
             Log.d("MyContactApp", "DatabaseHelper: Contact insert PASSED");
             return true;
         }
+    }
+
+    public Cursor getAllData(){
+       Log.d("MyContactApp", "DatabaseHelper: getting all data");
+       SQLiteDatabase db = this.getWritableDatabase();
+       Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
+       return res;
     }
 
 }
