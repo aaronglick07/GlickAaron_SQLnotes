@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(MainActivity.this, "Failed - contact not inserted", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void viewData(View view){
@@ -53,11 +54,36 @@ public class MainActivity extends AppCompatActivity {
         while(res.moveToNext()){
             //append res column 0, ... to the buffer - see StringBuffer and cursor api's
             buffer.append("ID: " + res.getString(0) + "\n");
-            buffer.append("Name: " + res.getString(1));
+            buffer.append("Name: " + res.getString(1) + "\n");
+            buffer.append("Phone Number: " + res.getString(2)+ "\n");
+            buffer.append("Age: " + res.getString(3)+ "\n");
         }
         showMessage("Data", buffer.toString());
     }
 
+    public void searchData(View view){
+        Log.d("MyContactApp","MainActivity: searching for data");
+        Cursor res = myDb.getAllData();
+        StringBuffer buffer = new StringBuffer();
+        if(editName.getText().toString().isEmpty() && editPhone.getText().toString().isEmpty() && editAge.getText().toString().isEmpty()){
+            showMessage("No result found", "You contact does not seem to be in the database");
+            return;
+        }
+        while(res.moveToNext()){
+            if(editName.getText().toString().isEmpty() || editName.getText().toString().equals((res.getString(1)))&&
+                    editPhone.getText().toString().isEmpty() || editPhone.getText().toString().equals((res.getString(2)))&&
+                    editAge.getText().toString().isEmpty() || editAge.getText().toString().equals((res.getString(3)))){
+                buffer.append("ID: " + res.getString(0) + "\n" +
+                        "Name: " + res.getString(1) + "\n" + "Phone Number: " + res.getString(2) + "\n"
+                        + "Age: " + res.getString(3));
+            }
+        }
+        if(buffer.toString().isEmpty()){
+            showMessage("Error","no matches were found");
+            return;
+        }
+        showMessage("Search results", buffer.toString());
+    }
 
     public void showMessage(String title, String message){
         Log.d("MyContactApp", "MainActivity: showing message");
