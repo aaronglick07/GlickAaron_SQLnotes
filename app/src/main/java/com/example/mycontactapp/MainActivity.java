@@ -70,12 +70,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         while(res.moveToNext()){
-            if(editName.getText().toString().isEmpty() || editName.getText().toString().equals((res.getString(1)))&&
-                    editPhone.getText().toString().isEmpty() || editPhone.getText().toString().equals((res.getString(2)))&&
-                    editAge.getText().toString().isEmpty() || editAge.getText().toString().equals((res.getString(3)))){
+            if(editName.getText().toString().equals(res.getString(1)) && editPhone.getText().toString().equals(res.getString(2))
+                    && editAge.getText().toString().equals(res.getString(3))){
+
+                Log.d("MyContactApp","MainActivity: searched for");
                 buffer.append("ID: " + res.getString(0) + "\n" +
                         "Name: " + res.getString(1) + "\n" + "Phone Number: " + res.getString(2) + "\n"
-                        + "Age: " + res.getString(3));
+                        + "Age: " + res.getString(3) + "\n\n");
+            }
+            
+            else if(editName.getText().toString().isEmpty() || editName.getText().toString().equals((res.getString(1)))&&
+                    editPhone.getText().toString().isEmpty() || editPhone.getText().toString().equals((res.getString(2)))&&
+                    editAge.getText().toString().isEmpty() || editAge.getText().toString().equals((res.getString(3)))){
+                Log.d("MyContactApp","MainActivity: searched for");
+
+                buffer.append("ID: " + res.getString(0) + "\n" +
+                        "Name: " + res.getString(1) + "\n" + "Phone Number: " + res.getString(2) + "\n"
+                        + "Age: " + res.getString(3) + "\n\n");
             }
         }
         if(buffer.toString().isEmpty()){
@@ -83,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         showMessage("Search results", buffer.toString());
+
     }
 
     public void showMessage(String title, String message){
